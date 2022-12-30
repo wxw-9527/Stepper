@@ -6,13 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.rouxinpai.stepper.Stepper
+        android:id="@+id/stepper"
+        android:layout_width="wrap_content"
+        android:layout_height="31.5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:stepper_button_text_size="21sp"
+        app:stepper_button_width="30dp"
+        app:stepper_data_element="FLOAT"
+        app:stepper_input_text_size="21sp"
+        app:stepper_input_width="63dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

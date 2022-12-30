@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="Stepper">
+        <!-- 数据类型 -->
+        <attr name="stepper_data_element" format="enum">
+            <enum name="FLOAT" value="0" />
+            <enum name="INT" value="1" />
+        </attr>
+        <!-- 保留小数位（仅数据类型为浮点型时生效） -->
+        <attr name="stepper_digits" format="integer" />
+        <!-- 控件高度 -->
+        <attr name="android:layout_height" />
+        <!-- 按钮相关 -->
+        <attr name="stepper_button_width" format="dimension" /> <!-- 按钮宽 -->
+        <attr name="stepper_button_text_size" format="dimension" /> <!-- 按钮文字大小 -->
+        <attr name="stepper_button_text_color" format="color|reference" /> <!-- 按钮文字颜色 -->
+        <attr name="stepper_left_button_background" format="reference" /> <!-- 左侧按钮背景 -->
+        <attr name="stepper_right_button_background" format="reference" /> <!-- 右侧按钮背景 -->
+        <attr name="stepper_left_button_text" format="string" /> <!-- 左侧按钮文字 -->
+        <attr name="stepper_right_button_text" format="string" /> <!-- 右侧按钮文字 -->
+        <!-- 输入框相关 -->
+        <attr name="stepper_input_width" format="dimension" /> <!-- 输入框宽 -->
+        <attr name="stepper_input_text_size" format="dimension" /> <!-- 输入框文字大小 -->
+        <attr name="stepper_input_text_color" format="color|reference" /> <!-- 输入框文字颜色 -->
+        <attr name="stepper_input_background" format="color|reference" /> <!-- 输入框背景 -->
+    </declare-styleable>
+</resources>
