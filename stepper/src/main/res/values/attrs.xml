@@ -11,6 +11,7 @@
         <!-- 控件高度 -->
         <attr name="android:layout_height" />
         <!-- 按钮相关 -->
+        <attr name="stepper_hide_button" format="boolean" /> <!-- 隐藏按钮 -->
         <attr name="stepper_button_width" format="dimension" /> <!-- 按钮宽 -->
         <attr name="stepper_button_text_size" format="dimension" /> <!-- 按钮文字大小 -->
         <attr name="stepper_button_text_color" format="color|reference" /> <!-- 按钮文字颜色 -->

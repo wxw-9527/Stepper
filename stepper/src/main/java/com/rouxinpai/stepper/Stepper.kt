@@ -18,6 +18,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
+import androidx.core.view.isGone
 import androidx.core.view.setPadding
 import java.text.NumberFormat
 
@@ -43,6 +44,7 @@ class Stepper @JvmOverloads constructor(
     private var mHeight: Int = WRAP_CONTENT
 
     // 按钮相关
+    private var mHideButton: Boolean = false // 是否隐藏按钮
     private var mButtonWidth: Int = WRAP_CONTENT // 按钮宽
     private var mButtonTextSize: Float = 14f // 按钮文字大小
     private var mButtonTextColor: Int = Color.WHITE // 按钮文字颜色
@@ -157,10 +159,18 @@ class Stepper @JvmOverloads constructor(
     }
 
     fun setMinValue(min: Float) {
+        if (min < 0) {
+            mMinValue = 0f
+            return
+        }
         mMinValue = min
     }
 
     fun setMaxValue(max: Float) {
+        if (max < 0) {
+            mMaxValue = 0f
+            return
+        }
         mMaxValue = max
     }
 
@@ -216,20 +226,23 @@ class Stepper @JvmOverloads constructor(
                 }
             mDigits = it.getInteger(R.styleable.Stepper_stepper_digits, mDigits)
             mHeight = it.getLayoutDimension(R.styleable.Stepper_android_layout_height, mHeight)
-            mButtonWidth =
-                it.getLayoutDimension(R.styleable.Stepper_stepper_button_width, mButtonWidth)
-            mButtonTextSize =
-                it.getDimension(R.styleable.Stepper_stepper_button_text_size, mButtonTextSize)
-            mButtonTextColor =
-                it.getColor(R.styleable.Stepper_stepper_button_text_color, mButtonTextColor)
-            mLeftButtonBackground =
-                it.getDrawable(R.styleable.Stepper_stepper_left_button_background)
-            mRightButtonBackground =
-                it.getDrawable(R.styleable.Stepper_stepper_right_button_background)
-            mLeftButtonText = it.getString(R.styleable.Stepper_stepper_left_button_text)
-            mRightButtonText = it.getString(R.styleable.Stepper_stepper_right_button_text)
+            mHideButton = it.getBoolean(R.styleable.Stepper_stepper_hide_button, mHideButton)
+            if (!mHideButton) {
+                mButtonWidth =
+                    it.getLayoutDimension(R.styleable.Stepper_stepper_button_width, mButtonWidth)
+                mButtonTextSize =
+                    it.getDimension(R.styleable.Stepper_stepper_button_text_size, mButtonTextSize)
+                mButtonTextColor =
+                    it.getColor(R.styleable.Stepper_stepper_button_text_color, mButtonTextColor)
+                mLeftButtonBackground =
+                    it.getDrawable(R.styleable.Stepper_stepper_left_button_background)
+                mRightButtonBackground =
+                    it.getDrawable(R.styleable.Stepper_stepper_right_button_background)
+                mLeftButtonText = it.getString(R.styleable.Stepper_stepper_left_button_text)
+                mRightButtonText = it.getString(R.styleable.Stepper_stepper_right_button_text)
+            }
             mInputWidth =
-                it.getLayoutDimension(R.styleable.Stepper_stepper_input_width, mButtonWidth)
+                it.getLayoutDimension(R.styleable.Stepper_stepper_input_width, mInputWidth)
             mInputBackground = it.getDrawable(R.styleable.Stepper_stepper_input_background)
             mInputTextSize =
                 it.getDimension(R.styleable.Stepper_stepper_input_text_size, mInputTextSize)
@@ -257,6 +270,7 @@ class Stepper @JvmOverloads constructor(
             text = mLeftButtonText ?: "—"
         }
         addView(mLeftButton)
+        mLeftButton.isGone = mHideButton
         // 填充输入框
         mInput = AppCompatEditText(context).apply {
             id = R.id.et_input
@@ -298,6 +312,7 @@ class Stepper @JvmOverloads constructor(
             text = mRightButtonText ?: "+"
         }
         addView(mRightButton)
+        mRightButton.isGone = mHideButton
     }
 
     private fun setTextAndMoveSelection(value: Float?) {
