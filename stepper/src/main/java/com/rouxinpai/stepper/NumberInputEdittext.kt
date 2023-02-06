@@ -119,7 +119,10 @@ class NumberInputEdittext @JvmOverloads constructor(
         }
         filters = arrayOf(NumberInputFilter(mDigits))
         //
-        mFormatter = NumberFormat.getNumberInstance().apply { maximumFractionDigits = mDigits }
+        mFormatter = NumberFormat.getNumberInstance().apply {
+            isGroupingUsed = false
+            maximumFractionDigits = mDigits
+        }
         // 绑定监听事件
         addTextChangedListener(mTextWatcher)
     }

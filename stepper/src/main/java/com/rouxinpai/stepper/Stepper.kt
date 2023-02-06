@@ -88,7 +88,10 @@ class Stepper @JvmOverloads constructor(
         //
         initView()
         //
-        mFormatter = NumberFormat.getNumberInstance().apply { maximumFractionDigits = mDigits }
+        mFormatter = NumberFormat.getNumberInstance().apply {
+            isGroupingUsed = false
+            maximumFractionDigits = mDigits
+        }
         // 绑定监听事件
         mLeftButton.setOnClickListener(this)
         mRightButton.setOnClickListener(this)

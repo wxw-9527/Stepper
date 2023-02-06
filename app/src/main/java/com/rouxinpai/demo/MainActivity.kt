@@ -20,5 +20,6 @@ class MainActivity : AppCompatActivity() {
         val input = findViewById<NumberInputEdittext>(R.id.number_input_edittext)
         input.setMinValue(0f)
         input.setMaxValue(12f)
+        input.setValue(26000f)
     }
 }
