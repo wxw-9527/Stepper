@@ -177,6 +177,10 @@ class Stepper @JvmOverloads constructor(
         mMaxValue = max
     }
 
+    fun getValue(): Float? {
+        return mValue
+    }
+
     fun setValue(value: Float?) {
         mValue = value
         mInput.removeTextChangedListener(this)
@@ -184,9 +188,11 @@ class Stepper @JvmOverloads constructor(
         mInput.addTextChangedListener(this)
         // 按钮状态初始化
         if (value != null) {
+            mRightButton.isEnabled = true
             if (value >= mMaxValue) {
                 mRightButton.isEnabled = false
             }
+            mLeftButton.isEnabled = true
             if (value <= mMinValue) {
                 mLeftButton.isEnabled = false
             }
