@@ -9,22 +9,29 @@
         </attr>
         <!-- 保留小数位（仅数据类型为浮点型时生效） -->
         <attr name="stepper_digits" format="integer" />
-        <!-- 控件高度 -->
-        <attr name="android:layout_height" />
-        <!-- 按钮相关 -->
-        <attr name="stepper_hide_button" format="boolean" /> <!-- 隐藏按钮 -->
-        <attr name="stepper_button_width" format="dimension" /> <!-- 按钮宽 -->
-        <attr name="stepper_button_text_size" format="dimension" /> <!-- 按钮文字大小 -->
-        <attr name="stepper_button_text_color" format="color|reference" /> <!-- 按钮文字颜色 -->
-        <attr name="stepper_left_button_background" format="reference" /> <!-- 左侧按钮背景 -->
-        <attr name="stepper_right_button_background" format="reference" /> <!-- 右侧按钮背景 -->
-        <attr name="stepper_left_button_text" format="string" /> <!-- 左侧按钮文字 -->
-        <attr name="stepper_right_button_text" format="string" /> <!-- 右侧按钮文字 -->
-        <!-- 输入框相关 -->
-        <attr name="stepper_input_width" format="dimension" /> <!-- 输入框宽 -->
-        <attr name="stepper_input_text_size" format="dimension" /> <!-- 输入框文字大小 -->
-        <attr name="stepper_input_text_color" format="color|reference" /> <!-- 输入框文字颜色 -->
-        <attr name="stepper_input_background" format="color|reference" /> <!-- 输入框背景 -->
+
+        <!-- 是否隐藏按钮 -->
+        <attr name="stepper_hide_button" format="boolean" />
+
+        <!-- 左侧按钮背景 -->
+        <attr name="stepper_left_button_background" format="reference" />
+        <!-- 右侧按钮背景 -->
+        <attr name="stepper_right_button_background" format="reference" />
+        <!-- 输入框背景 -->
+        <attr name="stepper_input_background" format="color|reference" />
+        <!-- 输入框文字大小 -->
+        <attr name="stepper_input_text_size" format="dimension" />
+        <!-- 输入框文字颜色 -->
+        <attr name="stepper_input_text_color" format="color|reference" />
+
+        <!-- 按钮尺寸 -->
+        <attr name="stepper_button_size" format="dimension" />
+        <!-- 输入框宽 -->
+        <attr name="stepper_input_width" format="dimension" />
+        <!-- 输入框高 -->
+        <attr name="stepper_input_height" format="dimension" />
+        <!-- 按钮与输入框之间的间距 -->
+        <attr name="stepper_padding_input_button" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="NumberInputEdittext">

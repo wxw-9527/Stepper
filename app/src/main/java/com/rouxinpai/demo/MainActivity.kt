@@ -2,7 +2,6 @@ package com.rouxinpai.demo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.rouxinpai.stepper.NumberInputEdittext
 import com.rouxinpai.stepper.Stepper
 
 class MainActivity : AppCompatActivity() {
@@ -13,13 +12,11 @@ class MainActivity : AppCompatActivity() {
         val stepper = findViewById<Stepper>(R.id.stepper)
 
         stepper.setMinValue(0f)
-        stepper.setMaxValue(12f)
+        stepper.setMaxValue(999999f)
 
-        // stepper.setValue(12f)
+        stepper.setEnable(false)
 
-        val input = findViewById<NumberInputEdittext>(R.id.number_input_edittext)
-        input.setMinValue(0f)
-        input.setMaxValue(12f)
-        input.setValue(26000f)
+        val stepper2 = findViewById<Stepper>(R.id.stepper_2)
+        stepper2.setEnable(true)
     }
 }

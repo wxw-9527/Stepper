@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <item name="btn_left" type="id" />
-    <item name="et_input" type="id" />
-    <item name="btn_right" type="id" />
-</resources>
