@@ -12,6 +12,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
@@ -95,132 +96,6 @@ class Stepper @JvmOverloads constructor(
         mBinding.btnLeft.setOnClickListener(this)
         mBinding.btnRight.setOnClickListener(this)
         mBinding.etInput.addTextChangedListener(this)
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btn_left -> setTextAndMoveSelection(((mValue ?: 0f).minus(1)))
-            R.id.btn_right -> setTextAndMoveSelection(((mValue ?: 0f).plus(1)))
-        }
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
-
-    override fun afterTextChanged(editable: Editable?) {
-        if (editable.isNullOrBlank() || editable.endsWith(".")) {
-            mValue = null
-            mBinding.btnLeft.isEnabled = false
-            mBinding.btnRight.isEnabled = false
-            mListeners.forEach { it.onValueChanged(mValue) }
-            return
-        }
-        try {
-            val text = editable.toString()
-            val value = text.toFloat()
-            if ("0.0" == text || "0.00" == text) {
-                mValue = mMinValue
-                mBinding.btnLeft.isEnabled = false
-                mBinding.btnRight.isEnabled = true
-                mListeners.forEach { it.onValueChanged(mValue) }
-            } else {
-                when {
-                    value <= mMinValue -> {
-                        mValue = mMinValue
-                        mBinding.btnLeft.isEnabled = false
-                        mBinding.btnRight.isEnabled = true
-                        mBinding.etInput.removeTextChangedListener(this)
-                        setTextAndMoveSelection(mValue)
-                        mBinding.etInput.addTextChangedListener(this)
-                        mListeners.forEach { it.onValueChanged(mValue) }
-                    }
-                    value >= mMaxValue -> {
-                        mValue = mMaxValue
-                        mBinding.btnLeft.isEnabled = true
-                        mBinding.btnRight.isEnabled = false
-                        mBinding.etInput.removeTextChangedListener(this)
-                        setTextAndMoveSelection(mValue)
-                        mBinding.etInput.addTextChangedListener(this)
-                        mListeners.forEach { it.onValueChanged(mValue) }
-                    }
-                    else -> {
-                        mValue = value
-                        mBinding.btnLeft.isEnabled = true
-                        mBinding.btnRight.isEnabled = true
-                        mListeners.forEach { it.onValueChanged(mValue) }
-                    }
-                }
-            }
-        } catch (e: NumberFormatException) {
-            mValue = null
-            mBinding.btnLeft.isEnabled = false
-            mBinding.btnRight.isEnabled = false
-            mListeners.forEach { it.onValueChanged(mValue) }
-        }
-    }
-
-    fun setMinValue(min: Float) {
-        if (min < 0) {
-            mMinValue = 0f
-            return
-        }
-        mMinValue = min
-    }
-
-    fun setMaxValue(max: Float) {
-        if (max < 0) {
-            mMaxValue = 0f
-            return
-        }
-        mMaxValue = max
-    }
-
-    fun getValue(): Float? {
-        return mValue
-    }
-
-    fun setValue(value: Float?) {
-        mValue = value
-        mBinding.etInput.removeTextChangedListener(this)
-        setTextAndMoveSelection(mValue)
-        mBinding.etInput.addTextChangedListener(this)
-        // 按钮状态初始化
-        if (value != null) {
-            mBinding.btnRight.isEnabled = true
-            if (value >= mMaxValue) {
-                mBinding.btnRight.isEnabled = false
-            }
-            mBinding.btnLeft.isEnabled = true
-            if (value <= mMinValue) {
-                mBinding.btnLeft.isEnabled = false
-            }
-        }
-    }
-
-    fun setEnable(enabled: Boolean) {
-        //
-        mEnabled = enabled
-        //
-        mBinding.btnLeft.isEnabled = enabled
-        mBinding.btnRight.isEnabled = enabled
-        with(mBinding.etInput) {
-            isFocusableInTouchMode = enabled
-            isFocusable = enabled
-            isEnabled = enabled
-        }
-    }
-
-    fun addListener(listener: OnValueChangeListener?) {
-        if (listener != null) {
-            mListeners.add(listener)
-        }
-    }
-
-    fun removeListener(listener: OnValueChangeListener?) {
-        if (listener != null) {
-            mListeners.remove(listener)
-        }
     }
 
     // 初始化自定义参数
@@ -308,10 +183,162 @@ class Stepper @JvmOverloads constructor(
         }
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_left -> setTextAndMoveSelection(((mValue ?: 0f).minus(1)))
+            R.id.btn_right -> setTextAndMoveSelection(((mValue ?: 0f).plus(1)))
+        }
+    }
+
+    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+    override fun afterTextChanged(editable: Editable?) {
+        if (editable.isNullOrBlank() || editable.endsWith(".")) {
+            mValue = null
+            mBinding.btnLeft.setEnable(false)
+            mBinding.btnRight.setEnable(false)
+            mListeners.forEach { it.onValueChanged(this, mValue) }
+            return
+        }
+        try {
+            val text = editable.toString()
+            val value = text.toFloat()
+            if ("0.0" == text || "0.00" == text) {
+                mValue = mMinValue
+                mBinding.btnLeft.setEnable(false)
+                mBinding.btnRight.setEnable(true)
+                mListeners.forEach { it.onValueChanged(this, mValue) }
+            } else {
+                when {
+                    value <= mMinValue -> {
+                        mValue = mMinValue
+                        mBinding.btnLeft.setEnable(false)
+                        mBinding.btnRight.setEnable(true)
+                        mBinding.etInput.removeTextChangedListener(this)
+                        setTextAndMoveSelection(mValue)
+                        mBinding.etInput.addTextChangedListener(this)
+                        mListeners.forEach { it.onValueChanged(this, mValue) }
+                    }
+                    value >= mMaxValue -> {
+                        mValue = mMaxValue
+                        mBinding.btnLeft.setEnable(true)
+                        mBinding.btnRight.setEnable(false)
+                        mBinding.etInput.removeTextChangedListener(this)
+                        setTextAndMoveSelection(mValue)
+                        mBinding.etInput.addTextChangedListener(this)
+                        mListeners.forEach { it.onValueChanged(this, mValue) }
+                    }
+                    else -> {
+                        mValue = value
+                        mBinding.btnLeft.setEnable(true)
+                        mBinding.btnRight.setEnable(true)
+                        mListeners.forEach { it.onValueChanged(this, mValue) }
+                    }
+                }
+            }
+        } catch (e: NumberFormatException) {
+            mValue = null
+            mBinding.btnLeft.setEnable(false)
+            mBinding.btnRight.setEnable(false)
+            mListeners.forEach { it.onValueChanged(this, mValue) }
+        }
+    }
+
+    /**
+     * 设置最小值
+     */
+    fun setMinValue(min: Float) {
+        if (min < 0) {
+            mMinValue = 0f
+            return
+        }
+        mMinValue = min
+    }
+
+    /**
+     * 设置最大值
+     */
+    fun setMaxValue(max: Float) {
+        if (max < 0) {
+            mMaxValue = 0f
+            return
+        }
+        mMaxValue = max
+    }
+
+    /**
+     * 获取当前值
+     */
+    fun getValue(): Float? {
+        return mValue
+    }
+
+    /**
+     * 设置当前值
+     */
+    fun setValue(value: Float?) {
+        if (value != null) {
+            if (mMaxValue == 0f && mMinValue == 0f) {
+                mValue = 0f
+                mBinding.btnLeft.setEnable(false)
+                mBinding.btnRight.setEnable(false)
+            } else if (value >= mMaxValue) {
+                mValue = mMaxValue
+                mBinding.btnLeft.setEnable(true)
+                mBinding.btnRight.setEnable(false)
+            } else if (value <= mMinValue) {
+                mValue = mMinValue
+                mBinding.btnLeft.setEnable(false)
+                mBinding.btnRight.setEnable(true)
+            }
+        } else {
+            mValue = null
+            mBinding.btnLeft.setEnable(false)
+            mBinding.btnRight.setEnable(false)
+        }
+        mBinding.etInput.removeTextChangedListener(this)
+        setTextAndMoveSelection(mValue)
+        mBinding.etInput.addTextChangedListener(this)
+    }
+
+    fun setEnable(enabled: Boolean) {
+        //
+        mEnabled = enabled
+        //
+        mBinding.btnLeft.isEnabled = enabled
+        mBinding.btnRight.isEnabled = enabled
+        with(mBinding.etInput) {
+            isFocusableInTouchMode = enabled
+            isFocusable = enabled
+            isEnabled = enabled
+        }
+    }
+
+    fun addListener(listener: OnValueChangeListener?) {
+        if (listener != null) {
+            mListeners.add(listener)
+        }
+    }
+
+    fun removeListener(listener: OnValueChangeListener?) {
+        if (listener != null) {
+            mListeners.remove(listener)
+        }
+    }
+
     private fun setTextAndMoveSelection(value: Float?) {
         with(mBinding.etInput) {
             setText(value?.let { mFormatter.format(it) })
             setSelection(text?.length ?: 0)
+        }
+    }
+
+    //
+    private fun ImageView.setEnable(enabled: Boolean) {
+        if (mEnabled) {
+            this.isEnabled = enabled
         }
     }
 }

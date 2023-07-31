@@ -54,7 +54,7 @@ class NumberInputEdittext @JvmOverloads constructor(
         override fun afterTextChanged(editable: Editable?) {
             if (editable.isNullOrBlank() || editable.endsWith(".")) {
                 mValue = null
-                mListeners.forEach { it.onValueChanged(mValue) }
+                mListeners.forEach { it.onValueChanged(this@NumberInputEdittext, mValue) }
                 return
             }
             try {
@@ -62,7 +62,7 @@ class NumberInputEdittext @JvmOverloads constructor(
                 val value = text.toFloat()
                 if ("0.0" == text || "0.00" == text) {
                     mValue = mMinValue
-                    mListeners.forEach { it.onValueChanged(mValue) }
+                    mListeners.forEach { it.onValueChanged(this@NumberInputEdittext, mValue) }
                 } else {
                     when {
                         value <= mMinValue -> {
@@ -70,24 +70,24 @@ class NumberInputEdittext @JvmOverloads constructor(
                             removeTextChangedListener(this)
                             setTextAndMoveSelection(mValue)
                             addTextChangedListener(this)
-                            mListeners.forEach { it.onValueChanged(mValue) }
+                            mListeners.forEach { it.onValueChanged(this@NumberInputEdittext, mValue) }
                         }
                         value >= mMaxValue -> {
                             mValue = mMaxValue
                             removeTextChangedListener(this)
                             setTextAndMoveSelection(mValue)
                             addTextChangedListener(this)
-                            mListeners.forEach { it.onValueChanged(mValue) }
+                            mListeners.forEach { it.onValueChanged(this@NumberInputEdittext, mValue) }
                         }
                         else -> {
                             mValue = value
-                            mListeners.forEach { it.onValueChanged(mValue) }
+                            mListeners.forEach { it.onValueChanged(this@NumberInputEdittext, mValue) }
                         }
                     }
                 }
             } catch (e: NumberFormatException) {
                 mValue = null
-                mListeners.forEach { it.onValueChanged(mValue) }
+                mListeners.forEach { it.onValueChanged(this@NumberInputEdittext, mValue) }
             }
         }
     }

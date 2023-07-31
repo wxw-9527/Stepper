@@ -12,8 +12,8 @@ class MainActivity : AppCompatActivity() {
         val stepper = findViewById<Stepper>(R.id.stepper)
 
         stepper.setMinValue(0f)
-        stepper.setMaxValue(999999f)
-
+        stepper.setMaxValue(30f)
+        stepper.setValue(30f)
         stepper.setEnable(false)
 
         val stepper2 = findViewById<Stepper>(R.id.stepper_2)

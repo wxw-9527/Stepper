@@ -1,5 +1,7 @@
 package com.rouxinpai.stepper
 
+import android.view.View
+
 /**
  * author : Saxxhw
  * email  : xingwangwang@cloudinnov.com
@@ -7,5 +9,5 @@ package com.rouxinpai.stepper
  * desc   :
  */
 interface OnValueChangeListener {
-    fun onValueChanged(value: Float?)
+    fun onValueChanged(view: View, value: Float?)
 }
