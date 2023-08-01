@@ -292,6 +292,10 @@ class Stepper @JvmOverloads constructor(
                 mValue = mMinValue
                 mBinding.btnLeft.setEnable(false)
                 mBinding.btnRight.setEnable(true)
+            } else {
+                mValue = value
+                mBinding.btnLeft.setEnable(true)
+                mBinding.btnRight.setEnable(true)
             }
         } else {
             mValue = null
