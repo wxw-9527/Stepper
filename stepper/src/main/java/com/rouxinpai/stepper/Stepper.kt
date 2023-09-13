@@ -28,13 +28,14 @@ import java.text.NumberFormat
  * desc   :
  */
 class Stepper @JvmOverloads constructor(
-    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0,
 ) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes),
     OnClickListener,
     TextWatcher {
 
     // 数据类型
     private var mDataElement: DataElement = DataElement.FLOAT
+
     // 保留小数位
     private var mDigits: Int = 3
 
@@ -43,21 +44,31 @@ class Stepper @JvmOverloads constructor(
 
     // 左侧按钮背景
     private var mLeftButtonBackground: Drawable? = null
+
     // 右侧按钮背景
     private var mRightButtonBackground: Drawable? = null
+
     // 输入框背景
     private var mInputBackground: Drawable? = null
+
     // 输入框文字大小
     private var mInputTextSize: Float = 14f
+
     // 输入框文字颜色
     private var mInputTextColor: Int = Color.BLACK
 
+    // 输入框是否允许点击
+    private var mInputClickable: Boolean = false
+
     // 按钮尺寸
     private var mButtonSize: Int = 26
+
     // 输入框宽
     private var mInputWidth: Int = 72
+
     // 输入框高
     private var mInputHeight: Int = 34
+
     // 按钮与输入框之间的间距
     private var mPaddingInputButton: Int = 4
 
@@ -75,6 +86,9 @@ class Stepper @JvmOverloads constructor(
 
     // 是否启用
     private var mEnabled: Boolean = true
+
+    //
+    private var mOnInputClickListener: OnClickListener? = null
 
     //
     private val mListeners = arrayListOf<OnValueChangeListener>()
@@ -114,14 +128,36 @@ class Stepper @JvmOverloads constructor(
             if (!mHideButton) {
                 mLeftButtonBackground = it.getDrawable(R.styleable.Stepper_stepper_left_button_background)
                 mRightButtonBackground = it.getDrawable(R.styleable.Stepper_stepper_right_button_background)
-                mButtonSize = it.getLayoutDimension(R.styleable.Stepper_stepper_button_size, mButtonSize)
-                mPaddingInputButton = it.getLayoutDimension(R.styleable.Stepper_stepper_padding_input_button, mPaddingInputButton)
+                mButtonSize = it.getLayoutDimension(
+                    R.styleable.Stepper_stepper_button_size,
+                    mButtonSize
+                )
+                mPaddingInputButton = it.getLayoutDimension(
+                    R.styleable.Stepper_stepper_padding_input_button,
+                    mPaddingInputButton
+                )
             }
             mInputBackground = it.getDrawable(R.styleable.Stepper_stepper_input_background)
-            mInputTextSize = it.getDimension(R.styleable.Stepper_stepper_input_text_size, mInputTextSize)
-            mInputTextColor = it.getColor(R.styleable.Stepper_stepper_input_text_color, mInputTextColor)
-            mInputWidth = it.getLayoutDimension(R.styleable.Stepper_stepper_input_width, mInputWidth)
-            mInputHeight = it.getLayoutDimension(R.styleable.Stepper_stepper_input_height, mInputHeight)
+            mInputTextSize = it.getDimension(
+                R.styleable.Stepper_stepper_input_text_size,
+                mInputTextSize
+            )
+            mInputTextColor = it.getColor(
+                R.styleable.Stepper_stepper_input_text_color,
+                mInputTextColor
+            )
+            mInputClickable = it.getBoolean(
+                R.styleable.Stepper_stepper_input_clickable,
+                mInputClickable
+            )
+            mInputWidth = it.getLayoutDimension(
+                R.styleable.Stepper_stepper_input_width,
+                mInputWidth
+            )
+            mInputHeight = it.getLayoutDimension(
+                R.styleable.Stepper_stepper_input_height,
+                mInputHeight
+            )
         }
     }
 
@@ -132,7 +168,10 @@ class Stepper @JvmOverloads constructor(
             isGone = mHideButton
             if (isVisible) {
                 // 按钮背景
-                background = mLeftButtonBackground ?: ContextCompat.getDrawable(context, R.drawable.stepper_ic_left)
+                background = mLeftButtonBackground ?: ContextCompat.getDrawable(
+                    context,
+                    R.drawable.stepper_ic_left
+                )
                 val lp = layoutParams as LayoutParams
                 // 按钮尺寸
                 lp.width = mButtonSize
@@ -147,7 +186,10 @@ class Stepper @JvmOverloads constructor(
             isGone = mHideButton
             if (isVisible) {
                 // 按钮背景
-                background = mLeftButtonBackground ?: ContextCompat.getDrawable(context, R.drawable.stepper_ic_right)
+                background = mLeftButtonBackground ?: ContextCompat.getDrawable(
+                    context,
+                    R.drawable.stepper_ic_right
+                )
                 val lp = layoutParams as LayoutParams
                 // 按钮尺寸
                 lp.width = mButtonSize
@@ -169,7 +211,10 @@ class Stepper @JvmOverloads constructor(
             }
             filters = arrayOf(NumberInputFilter(mDigits))
             // 设置输入框背景
-            background = mInputBackground ?: ContextCompat.getDrawable(context, R.drawable.selector_input_background)
+            background = mInputBackground ?: ContextCompat.getDrawable(
+                context,
+                R.drawable.selector_input_background
+            )
             // 设置输入框文字大小
             setTextSize(TypedValue.COMPLEX_UNIT_PX, mInputTextSize)
             // 设置输入框文字颜色
@@ -180,6 +225,15 @@ class Stepper @JvmOverloads constructor(
             lp.width = mInputWidth
             lp.height = mInputHeight
             layoutParams = lp
+            // 设置点击事件
+            if (mInputClickable) {
+                isFocusable = false
+                isFocusableInTouchMode = false
+                setOnClickListener { view -> mOnInputClickListener?.onClick(view) }
+            } else {
+                isFocusable = true
+                isFocusableInTouchMode = true
+            }
         }
     }
 
@@ -221,6 +275,7 @@ class Stepper @JvmOverloads constructor(
                         mBinding.etInput.addTextChangedListener(this)
                         mListeners.forEach { it.onValueChanged(this, mValue) }
                     }
+
                     value >= mMaxValue -> {
                         mValue = mMaxValue
                         mBinding.btnLeft.setEnable(true)
@@ -230,6 +285,7 @@ class Stepper @JvmOverloads constructor(
                         mBinding.etInput.addTextChangedListener(this)
                         mListeners.forEach { it.onValueChanged(this, mValue) }
                     }
+
                     else -> {
                         mValue = value
                         mBinding.btnLeft.setEnable(true)
@@ -318,6 +374,10 @@ class Stepper @JvmOverloads constructor(
             isFocusable = enabled
             isEnabled = enabled
         }
+    }
+
+    fun setOnInputClickListener(listener: OnClickListener) {
+        mOnInputClickListener = listener
     }
 
     fun addListener(listener: OnValueChangeListener?) {

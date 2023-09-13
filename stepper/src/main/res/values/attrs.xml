@@ -23,6 +23,8 @@
         <attr name="stepper_input_text_size" format="dimension" />
         <!-- 输入框文字颜色 -->
         <attr name="stepper_input_text_color" format="color|reference" />
+        <!-- 输入框是否允许点击 -->
+        <attr name="stepper_input_clickable" format="boolean" />
 
         <!-- 按钮尺寸 -->
         <attr name="stepper_button_size" format="dimension" />
