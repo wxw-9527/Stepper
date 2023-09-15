@@ -186,7 +186,7 @@ class Stepper @JvmOverloads constructor(
             isGone = mHideButton
             if (isVisible) {
                 // 按钮背景
-                background = mLeftButtonBackground ?: ContextCompat.getDrawable(
+                background = mRightButtonBackground ?: ContextCompat.getDrawable(
                     context,
                     R.drawable.stepper_ic_right
                 )
