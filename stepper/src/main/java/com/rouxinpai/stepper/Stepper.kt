@@ -12,6 +12,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -202,13 +203,8 @@ class Stepper @JvmOverloads constructor(
         // 填充输入框
         with(mBinding.etInput) {
             // 设置数据类型
-            if (mDataElement == DataElement.INT) {
-                inputType = InputType.TYPE_CLASS_NUMBER
-                keyListener = DigitsKeyListener.getInstance("0123456789")
-            } else {
-                inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
-                keyListener = DigitsKeyListener.getInstance("0123456789.")
-            }
+            configureInputTypeAndKeyListener()
+            // 设置输入框过滤器
             filters = arrayOf(NumberInputFilter(mDigits))
             // 设置输入框背景
             background = mInputBackground ?: ContextCompat.getDrawable(
@@ -299,6 +295,25 @@ class Stepper @JvmOverloads constructor(
             mBinding.btnLeft.setEnable(false)
             mBinding.btnRight.setEnable(false)
             mListeners.forEach { it.onValueChanged(this, mValue) }
+        }
+    }
+
+    /**
+     * 设置数据类型
+     */
+    fun setDataElement(dataElement: DataElement) {
+        mDataElement = dataElement
+        mBinding.etInput.configureInputTypeAndKeyListener()
+    }
+
+    // 配置输入框类型和监听器
+    private fun EditText.configureInputTypeAndKeyListener() {
+        if (mDataElement == DataElement.INT) {
+            inputType = InputType.TYPE_CLASS_NUMBER
+            keyListener = DigitsKeyListener.getInstance("0123456789")
+        } else {
+            inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL
+            keyListener = DigitsKeyListener.getInstance("0123456789.")
         }
     }
 
