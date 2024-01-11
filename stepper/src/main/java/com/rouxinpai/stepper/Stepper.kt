@@ -14,7 +14,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.widget.EditText
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.use
 import androidx.core.view.isGone
@@ -30,7 +30,7 @@ import java.text.NumberFormat
  */
 class Stepper @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0, defStyleRes: Int = 0,
-) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes),
+) : LinearLayout(context, attrs, defStyleAttr, defStyleRes),
     OnClickListener,
     TextWatcher {
 
@@ -318,6 +318,13 @@ class Stepper @JvmOverloads constructor(
     }
 
     /**
+     * 获取最小值
+     */
+    fun getMin(): Float {
+        return mMinValue
+    }
+
+    /**
      * 设置最小值
      */
     fun setMinValue(min: Float) {
@@ -326,6 +333,13 @@ class Stepper @JvmOverloads constructor(
             return
         }
         mMinValue = min
+    }
+
+    /**
+     * 获取最大值
+     */
+    fun getMax(): Float {
+        return mMaxValue
     }
 
     /**
