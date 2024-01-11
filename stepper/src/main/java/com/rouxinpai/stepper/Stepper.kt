@@ -225,7 +225,7 @@ class Stepper @JvmOverloads constructor(
             if (mInputClickable) {
                 isFocusable = false
                 isFocusableInTouchMode = false
-                setOnClickListener { view -> mOnInputClickListener?.onClick(view) }
+                setOnClickListener { mOnInputClickListener?.onClick(this@Stepper) }
             } else {
                 isFocusable = true
                 isFocusableInTouchMode = true
@@ -384,9 +384,15 @@ class Stepper @JvmOverloads constructor(
         //
         mBinding.btnLeft.isEnabled = enabled
         mBinding.btnRight.isEnabled = enabled
+        //
         with(mBinding.etInput) {
-            isFocusableInTouchMode = enabled
-            isFocusable = enabled
+            if (enabled) {
+                isFocusableInTouchMode = !mInputClickable
+                isFocusable = !mInputClickable
+            } else {
+                isFocusableInTouchMode = false
+                isFocusable = false
+            }
             isEnabled = enabled
         }
     }

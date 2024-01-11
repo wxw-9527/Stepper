@@ -21,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:stepper_button_size="26dp"
+        app:stepper_input_clickable="true"
         app:stepper_input_height="34dp"
         app:stepper_input_text_size="18sp"
         app:stepper_input_width="77dp"
@@ -35,6 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stepper"
         app:stepper_button_size="26dp"
+        app:stepper_input_clickable="true"
         app:stepper_input_height="34dp"
         app:stepper_input_text_size="18sp"
         app:stepper_input_width="77dp"
@@ -60,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="修改输入类型"
-        app:layout_constraintTop_toBottomOf="@+id/stepper_3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stepper_3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
