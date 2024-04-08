@@ -7,6 +7,7 @@ import android.view.View.OnClickListener
 import android.widget.Button
 import android.widget.Toast
 import com.rouxinpai.stepper.DataElement
+import com.rouxinpai.stepper.OnValueChangeListener
 import com.rouxinpai.stepper.Stepper
 
 class MainActivity : AppCompatActivity(), OnClickListener {
@@ -16,10 +17,15 @@ class MainActivity : AppCompatActivity(), OnClickListener {
 
         val stepper = findViewById<Stepper>(R.id.stepper).apply {
             setMinValue(0f)
-            setMaxValue(30f)
-            setValue(30f)
+            setMaxValue(30.60f)
+            setValue(0f)
             setEnable(true)
             setOnInputClickListener(this@MainActivity)
+            addListener(object : OnValueChangeListener {
+                override fun onValueChanged(view: View, value: Float?) {
+                    val a = value
+                }
+            })
         }
 
         val stepper2 = findViewById<Stepper>(R.id.stepper_2).apply {

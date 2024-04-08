@@ -20,6 +20,7 @@ import androidx.core.content.res.use
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.rouxinpai.stepper.databinding.StepperBinding
+import java.math.BigDecimal
 import java.text.NumberFormat
 
 /**
@@ -235,8 +236,8 @@ class Stepper @JvmOverloads constructor(
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.btn_left -> setTextAndMoveSelection(((mValue ?: 0f).minus(1)))
-            R.id.btn_right -> setTextAndMoveSelection(((mValue ?: 0f).plus(1)))
+            R.id.btn_left -> setTextAndMoveSelection(mValue subtract 1f)
+            R.id.btn_right -> setTextAndMoveSelection(mValue add 1f)
         }
     }
 
@@ -254,7 +255,7 @@ class Stepper @JvmOverloads constructor(
         }
         try {
             val text = editable.toString()
-            val value = text.toFloat()
+            val value = text.toBigDecimal().toFloat()
             if ("0.0" == text || "0.00" == text) {
                 mValue = mMinValue
                 mBinding.btnLeft.setEnable(false)
@@ -439,5 +440,19 @@ class Stepper @JvmOverloads constructor(
         if (mEnabled) {
             this.isEnabled = enabled
         }
+    }
+
+    /**
+     * 修复Float相减计算精度丢失的问题
+     */
+    private infix fun Float?.subtract(that: Float?): Float {
+        return (this?.toBigDecimal() ?: BigDecimal.ZERO).subtract(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
+    }
+
+    /**
+     * 修复Float相加计算精度丢失的问题
+     */
+    private infix fun Float?.add(that: Float?): Float {
+        return (this?.toBigDecimal() ?: BigDecimal.ZERO).add(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
     }
 }

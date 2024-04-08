@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:stepper_button_size="26dp"
-        app:stepper_input_clickable="true"
+        app:stepper_data_element="FLOAT"
         app:stepper_input_height="34dp"
         app:stepper_input_text_size="18sp"
         app:stepper_input_width="77dp"
