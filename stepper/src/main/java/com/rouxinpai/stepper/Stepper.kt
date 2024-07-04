@@ -412,6 +412,23 @@ class Stepper @JvmOverloads constructor(
         }
     }
 
+    /**
+     * 刷新按钮状态
+     */
+    fun refresh() {
+        val value = mValue ?: 0f
+        if (value <= mMinValue) {
+            mBinding.btnLeft.isEnabled = false
+        } else {
+            mBinding.btnLeft.isEnabled = true
+        }
+        if (value >= mMaxValue) {
+            mBinding.btnRight.isEnabled = false
+        } else {
+            mBinding.btnRight.isEnabled = true
+        }
+    }
+
     fun setOnInputClickListener(listener: OnClickListener) {
         mOnInputClickListener = listener
     }
@@ -446,13 +463,15 @@ class Stepper @JvmOverloads constructor(
      * 修复Float相减计算精度丢失的问题
      */
     private infix fun Float?.subtract(that: Float?): Float {
-        return (this?.toBigDecimal() ?: BigDecimal.ZERO).subtract(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
+        return (this?.toBigDecimal() ?: BigDecimal.ZERO).subtract(that?.toBigDecimal() ?: BigDecimal.ZERO)
+            .toFloat()
     }
 
     /**
      * 修复Float相加计算精度丢失的问题
      */
     private infix fun Float?.add(that: Float?): Float {
-        return (this?.toBigDecimal() ?: BigDecimal.ZERO).add(that?.toBigDecimal() ?: BigDecimal.ZERO).toFloat()
+        return (this?.toBigDecimal() ?: BigDecimal.ZERO).add(that?.toBigDecimal() ?: BigDecimal.ZERO)
+            .toFloat()
     }
 }

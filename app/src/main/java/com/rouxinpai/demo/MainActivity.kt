@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
         val stepper = findViewById<Stepper>(R.id.stepper).apply {
             setMinValue(0f)
             setMaxValue(30.60f)
-            setValue(0f)
+            setValue(30.60f)
             setEnable(true)
             setOnInputClickListener(this@MainActivity)
             addListener(object : OnValueChangeListener {
@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), OnClickListener {
                     val a = value
                 }
             })
+            refresh()
         }
 
         val stepper2 = findViewById<Stepper>(R.id.stepper_2).apply {
