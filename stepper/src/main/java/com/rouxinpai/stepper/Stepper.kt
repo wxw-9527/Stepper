@@ -447,7 +447,7 @@ class Stepper @JvmOverloads constructor(
 
     private fun setTextAndMoveSelection(value: Float?) {
         with(mBinding.etInput) {
-            setText(value?.let { mFormatter.format(it) })
+            setText(value?.let { mFormatter.format(it.toBigDecimal()) })
             setSelection(text?.length ?: 0)
         }
     }
